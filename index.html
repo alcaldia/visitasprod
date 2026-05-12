@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CauDi Móvil — Caucasia Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --brand:#1e40af; --brand-light:#dbeafe; --brand-mid:#3b82f6;
+      --ok:#059669; --ok-light:#d1fae5;
+      --warn:#d97706; --warn-light:#fef3c7;
+      --danger:#dc2626; --danger-light:#fee2e2;
+      --bg:#f1f5f9; --text:#0f172a; --muted:#64748b; --border:#e2e8f0;
+      --radius:16px; --radius-sm:10px;
+      --shadow:0 2px 16px rgba(0,0,0,0.08);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden;font-size:15px}
+    .screen{position:absolute;inset:0;display:flex;flex-direction:column}
+    .screen.hidden{display:none}
+
+    /* Toast */
+    #toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%) translateY(16px);background:#1e293b;color:white;padding:11px 20px;border-radius:50px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;z-index:9999;max-width:88vw;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    #toast.ok{background:var(--ok)}#toast.warn{background:var(--warn)}#toast.err{background:var(--danger)}
+
+    /* Online pill */
+    #online-pill{padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700;transition:all .4s;display:flex;align-items:center;gap:5px;flex-shrink:0}
+    #online-pill.on{background:var(--ok-light);color:var(--ok)}
+    #online-pill.off{background:var(--danger-light);color:var(--danger)}
+
+    /* Login */
+    #screen-login{background:linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #16a34a 100%);justify-content:center;align-items:center;padding:24px}
+    .login-card{background:white;border-radius:24px;padding:32px 28px;width:100%;max-width:380px;box-shadow:0 24px 64px rgba(0,0,0,.35)}
+    .login-logo{width:72px;height:72px;background:var(--brand-light);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px;color:var(--brand)}
+    .login-title{font-size:22px;font-weight:800;text-align:center}
+    .login-sub{font-size:13px;color:var(--muted);text-align:center;margin-top:4px;margin-bottom:28px}
+    .input-wrap{position:relative;margin-bottom:14px}
+    .input-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px}
+    .input-wrap input{width:100%;padding:14px 14px 14px 42px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;font-size:15px;font-weight:600;color:var(--text);background:#f8fafc;outline:none;transition:all .2s}
+    .input-wrap input:focus{border-color:var(--brand-mid);background:white;box-shadow:0 0 0 3px var(--brand-light)}
+    .btn-primary{width:100%;padding:15px;border:none;border-radius:var(--radius-sm);background:var(--brand);color:white;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
+    .btn-primary:active{transform:scale(.98)}
+    .btn-primary:disabled{opacity:.6}
+
+    /* Home header */
+    .home-header{background:white;padding:16px 20px 0;border-radius:0 0 24px 24px;z-index:10;box-shadow:0 1px 0 var(--border)}
+    .home-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .user-info{display:flex;align-items:center;gap:12px}
+    .user-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:white;flex-shrink:0}
+    .user-greeting{font-size:12px;color:var(--muted);font-weight:600}
+    .user-name{font-size:18px;font-weight:800}
+    .btn-logout{width:38px;height:38px;border-radius:50%;border:none;background:var(--danger-light);color:var(--danger);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
+    .offline-banner{background:var(--warn-light);border:1.5px solid #fcd34d;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;color:#92400e;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+    .offline-banner.hidden{display:none}
+    .tabs{display:flex;border-top:1px solid var(--border);margin-top:2px}
+    .tab{flex:1;padding:12px 8px;border:none;background:none;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s}
+    .tab.active{color:var(--brand);border-bottom-color:var(--brand)}
+    .badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:#e2e8f0;color:var(--muted);transition:all .2s}
+    .tab.active .badge{background:var(--brand-light);color:var(--brand)}
+
+    /* Visit list */
+    #visit-list{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;padding-bottom:24px}
+    .visit-card{background:white;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1.5px solid var(--border);cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:14px}
+    .visit-card:active{transform:scale(.98);box-shadow:none}
+    .visit-card-bar{width:4px;border-radius:4px;align-self:stretch;flex-shrink:0;min-height:48px}
+    .visit-card-bar.new{background:var(--brand)}
+    .visit-card-bar.pend{background:var(--warn)}
+    .visit-card-bar.offline{background:#8b5cf6}
+    .visit-card-content{flex:1;min-width:0}
+    .visit-rad{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px}
+    .visit-rad.new{color:var(--brand)}
+    .visit-rad.pend{color:var(--warn)}
+    .visit-rad.offline{color:#7c3aed}
+    .visit-name{font-size:15px;font-weight:700;color:var(--text);line-height:1.3;word-break:break-word;white-space:normal}
+    .visit-addr{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.3;word-break:break-word;white-space:normal}
+    .visit-meta{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+    .visit-tag{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--bg);color:var(--muted)}
+    .visit-tag.red{background:var(--danger-light);color:var(--danger)}
+    .visit-tag.purple{background:#ede9fe;color:#6d28d9}
+    .visit-arrow{color:var(--border);font-size:16px;flex-shrink:0;margin-top:4px}
+    .empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);text-align:center;padding:40px}
+    .empty-icon{font-size:48px;margin-bottom:16px;opacity:.4}
+    .empty-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px}
+    .empty-sub{font-size:14px}
+    .loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;flex:1;color:var(--muted)}
+
+    /* Detail */
+    .detail-header{background:white;padding:16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);z-index:10;flex-shrink:0}
+    .btn-back{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--border);background:white;color:var(--text);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+    .detail-rad{text-align:center}
+    .detail-rad-label{font-size:10px;font-weight:800;color:var(--brand);letter-spacing:1px;text-transform:uppercase}
+    .detail-rad-num{font-size:18px;font-weight:800;font-family:'DM Mono',monospace}
+    .header-actions{display:flex;gap:8px}
+    .btn-action{width:38px;height:38px;border-radius:50%;border:1.5px solid;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .btn-action:active{transform:scale(.9)}
+    .btn-action.warn{border-color:#fde68a;background:var(--warn-light);color:var(--warn)}
+    .btn-action.danger{border-color:#fca5a5;background:var(--danger-light);color:var(--danger)}
+    #detail-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;padding-bottom:130px}
+    .alert{background:var(--warn-light);border:1.5px solid #fcd34d;border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+    .alert i{color:var(--warn);margin-top:2px}
+    .alert-title{font-size:13px;font-weight:700;color:#92400e}
+    .alert-msg{font-size:12px;color:#b45309;margin-top:2px;line-height:1.4}
+    .info-card{background:white;border-radius:var(--radius);border:1.5px solid var(--border);padding:18px;box-shadow:var(--shadow)}
+    .info-section{margin-bottom:16px}
+    .info-section:last-child{margin-bottom:0}
+    .info-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+    .info-value{font-size:16px;font-weight:700;word-break:break-word}
+    .info-sub{font-size:12px;color:var(--muted);margin-top:2px}
+    .btn-call{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:50px;background:var(--ok-light);color:var(--ok);border:1.5px solid #6ee7b7;font-size:12px;font-weight:700;text-decoration:none;margin-top:6px}
+    .gps-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:50px;font-size:12px;font-weight:700;transition:all .3s}
+    .gps-pill.searching{background:var(--warn-light);color:var(--warn)}
+    .gps-pill.ok{background:var(--ok-light);color:var(--ok)}
+    .gps-pill.error{background:var(--danger-light);color:var(--danger)}
+    .intentos-badge{display:inline-flex;align-items:center;gap:4px;background:var(--danger-light);color:var(--danger);padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700;border:1px solid #fca5a5}
+    .section-title{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:8px}
+    .section-title i{color:var(--brand)}
+
+    /* Photo grid */
+    .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .photo-btn{height:110px;border-radius:var(--radius-sm);border:2px dashed var(--border);background:var(--bg);cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:inherit;position:relative;overflow:hidden}
+    .photo-btn:active{transform:scale(.96)}
+    .photo-btn .btn-icon{font-size:22px;color:var(--muted)}
+    .photo-btn .btn-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase}
+    .photo-btn.required{border-color:#fca5a5;background:#fff5f5}
+    .photo-btn.required .btn-icon,.photo-btn.required .btn-label{color:var(--danger)}
+    .photo-btn.done{border-color:#6ee7b7;border-style:solid;background:var(--ok-light)}
+    .photo-btn.done .btn-icon,.photo-btn.done .btn-label{color:var(--ok)}
+    .photo-btn img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .photo-btn .done-badge{position:absolute;top:6px;right:6px;background:var(--ok);color:white;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+    .photo-btn .size-label{position:absolute;bottom:5px;left:5px;background:rgba(0,0,0,.55);color:white;border-radius:6px;font-size:9px;font-weight:700;padding:2px 6px}
+    .photo-progress{margin-top:10px}
+    .progress-bar{height:5px;background:var(--border);border-radius:4px;overflow:hidden}
+    .progress-fill{height:100%;background:var(--ok);border-radius:4px;transition:width .3s}
+    .progress-label{font-size:12px;color:var(--muted);font-weight:600;margin-top:6px}
+
+    /* Form */
+    .form-card{background:white;border-radius:var(--radius);border:1.5px solid var(--border);padding:18px;box-shadow:var(--shadow)}
+    .form-group{margin-bottom:14px}
+    .form-group:last-child{margin-bottom:0}
+    .form-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block}
+    .form-input,.form-textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;font-size:15px;color:var(--text);background:#f8fafc;outline:none;transition:all .2s;font-weight:500}
+    .form-input:focus,.form-textarea:focus{border-color:var(--brand-mid);background:white;box-shadow:0 0 0 3px var(--brand-light)}
+    .form-textarea{resize:none;line-height:1.5}
+
+    /* Bottom */
+    .bottom-actions{position:fixed;bottom:0;left:0;right:0;background:white;padding:12px 16px 22px;border-top:1px solid var(--border);display:flex;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,.08);z-index:20}
+    .btn-pending{flex:1;padding:14px;border-radius:var(--radius-sm);border:1.5px solid #fcd34d;background:var(--warn-light);color:var(--warn);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
+    .btn-pending:active{transform:scale(.97)}
+    .btn-pending:disabled{opacity:.5}
+    .btn-final{flex:2;padding:14px;border-radius:var(--radius-sm);border:none;background:var(--ok);color:white;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 16px rgba(5,150,105,.3)}
+    .btn-final:active{transform:scale(.97)}
+    .btn-final:disabled{opacity:.5;box-shadow:none}
+
+    /* Modal de confirmación */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:flex;align-items:flex-end;padding:16px}
+    .modal-overlay.hidden{display:none}
+    .modal-card{background:white;border-radius:24px 24px 20px 20px;padding:24px;width:100%;max-width:480px;margin:0 auto;animation:slideUp .3s ease-out}
+    @keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+    .modal-title{font-size:18px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+    .confirm-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+    .confirm-row:last-of-type{border-bottom:none}
+    .confirm-label{color:var(--muted);font-weight:600}
+    .confirm-value{font-weight:700;text-align:right;max-width:60%}
+    .confirm-value.ok{color:var(--ok)}
+    .confirm-value.warn{color:var(--warn)}
+    .modal-btns{display:flex;gap:10px;margin-top:20px}
+    .btn-cancel{flex:1;padding:14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:white;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted)}
+    .btn-confirm{flex:2;padding:14px;border-radius:var(--radius-sm);border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:white}
+    .btn-confirm.ok{background:var(--ok)}
+    .btn-confirm.warn{background:var(--warn)}
+
+    /* Photo preview modal */
+    .photo-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:600;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .photo-modal.hidden{display:none}
+    .photo-modal img{max-width:100%;max-height:80vh;object-fit:contain;border-radius:12px}
+    .photo-modal-close{position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.2);border:none;color:white;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .photo-modal-label{color:white;font-size:14px;font-weight:700;margin-top:16px;text-transform:uppercase;letter-spacing:1px}
+
+    /* Spinner */
+    .spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite}
+    .spinner.dark{border-color:rgba(0,0,0,.15);border-top-color:var(--brand)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Success animation */
+    .success-overlay{position:fixed;inset:0;background:rgba(5,150,105,.95);z-index:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+    .success-overlay.hidden{display:none}
+    .success-icon{width:100px;height:100px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:48px;animation:popIn .4s ease-out}
+    @keyframes popIn{0%{transform:scale(0)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+    .success-title{font-size:24px;font-weight:800;color:white}
+    .success-sub{font-size:15px;color:rgba(255,255,255,.8);font-weight:600}
+
+    /* Offline queue badge */
+    .queue-pill{background:#ede9fe;color:#6d28d9;border:1.5px solid #c4b5fd;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;margin:0 16px 4px}
+    .queue-pill.hidden{display:none}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .fade-in{animation:fadeUp .25s ease-out}
+  </style>
+</head>
+<body>
+
+<!-- Online indicator and Toast -->
+<div id="toast"></div>
+
+<!-- Photo preview modal -->
+<div id="photo-modal" class="photo-modal hidden">
+  <button class="photo-modal-close" onclick="ui.closePhotoModal()"><i class="fas fa-times"></i></button>
+  <img id="photo-modal-img" src="" alt="preview">
+  <div class="photo-modal-label" id="photo-modal-label"></div>
+</div>
+
+<!-- Confirm modal -->
+<div id="confirm-modal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-title" id="confirm-title"></div>
+    <div id="confirm-body"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="ui.closeConfirm()">Cancelar</button>
+      <button class="btn-confirm" id="confirm-ok-btn">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Success overlay -->
+<div id="success-overlay" class="success-overlay hidden">
+  <div class="success-icon">✅</div>
+  <div class="success-title">¡Visita completada!</div>
+  <div class="success-sub" id="success-sub">Información guardada correctamente</div>
+</div>
+
+<!-- ══ LOGIN ══ -->
+<div id="screen-login" class="screen fade-in">
+  <div style="background:linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #16a34a 100%);flex:1;display:flex;align-items:center;justify-content:center;padding:24px">
+    <div class="login-card">
+      <div class="login-logo"><i class="fas fa-landmark"></i></div>
+      <h1 class="login-title">CauDi Móvil</h1>
+      <p class="login-sub">Gestión de Visitas · Caucasia Digital</p>
+      <div class="input-wrap">
+        <i class="fas fa-user"></i>
+        <input type="text" id="login-user" placeholder="Usuario" autocapitalize="none" autocorrect="off">
+      </div>
+      <div class="input-wrap">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="login-pass" placeholder="Contraseña">
+      </div>
+      <button class="btn-primary" id="btn-login" onclick="app.login()">
+        <span>INGRESAR</span><i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HOME ══ -->
+<div id="screen-home" class="screen hidden fade-in">
+  <div class="home-header">
+    <div class="home-top">
+      <div class="user-info">
+        <div class="user-avatar" id="user-avatar" style="background:#1e40af">JD</div>
+        <div>
+          <div class="user-greeting">Bienvenido,</div>
+          <div class="user-name" id="lbl-user-name">—</div>
+        </div>
+      </div>
+      <div id="online-pill" class="on"><i class="fas fa-circle" style="font-size:7px"></i> EN LÍNEA</div>
+      <button class="btn-logout" onclick="app.logout()"><i class="fas fa-power-off"></i></button>
+    </div>
+    <div id="offline-banner" class="offline-banner hidden">
+      <i class="fas fa-wifi-slash"></i> Sin conexión — mostrando visitas guardadas localmente
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="tab-asignadas" onclick="app.switchTab('asignadas')">
+        <i class="fas fa-star"></i> NUEVAS <span class="badge" id="badge-asignadas">0</span>
+      </button>
+      <button class="tab" id="tab-pendientes" onclick="app.switchTab('pendientes')">
+        <i class="fas fa-clock"></i> SEGUIMIENTO <span class="badge" id="badge-pendientes">0</span>
+      </button>
+    </div>
+  </div>
+  <div id="queue-pill" class="queue-pill hidden">
+    <i class="fas fa-cloud-upload-alt"></i>
+    <span id="queue-text">Hay visitas pendientes de sincronizar</span>
+    <button onclick="app.syncOfflineQueue()" style="background:#7c3aed;color:white;border:none;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;margin-left:auto">SUBIR</button>
+  </div>
+  <div id="visit-list" class="fade-in" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;padding-bottom:24px">
+    <div class="loading-state">
+      <div class="spinner dark"></div>
+      <span style="font-size:13px;font-weight:600;color:var(--muted)">Cargando visitas...</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DETALLE ══ -->
+<div id="screen-detail" class="screen hidden fade-in">
+  <div class="detail-header">
+    <button class="btn-back" onclick="ui.show('screen-home')"><i class="fas fa-chevron-left"></i></button>
+    <div class="detail-rad">
+      <div class="detail-rad-label">Radicado</div>
+      <div class="detail-rad-num" id="det-radicado">—</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-action warn"   onclick="app.logUserRejection()" title="Usuario rechaza"><i class="fas fa-ban"></i></button>
+      <button class="btn-action danger" onclick="app.logNoContact()"     title="No contesta"><i class="fas fa-user-slash"></i></button>
+    </div>
+  </div>
+
+  <div id="detail-body">
+    <div id="alert-pending" class="alert hidden">
+      <i class="fas fa-exclamation-triangle"></i>
+      <div>
+        <div class="alert-title">Visita en Seguimiento</div>
+        <div class="alert-msg" id="alert-pending-msg"></div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-section">
+        <div class="info-label">Solicitante</div>
+        <div class="info-value" id="det-nombre">—</div>
+        <div class="info-sub" id="det-cedula"></div>
+      </div>
+      <div class="info-section">
+        <div class="info-label">Contacto</div>
+        <div class="info-value" id="det-telefono">No registrado</div>
+        <a id="btn-llamar" href="#" class="btn-call hidden"><i class="fas fa-phone-alt"></i> Llamar</a>
+        <div class="info-value" id="det-telefono2" style="margin-top:6px;font-size:14px"></div>
+        <a id="btn-llamar2" href="#" class="btn-call hidden" style="margin-top:4px"><i class="fas fa-phone-alt"></i> Llamar 2</a>
+      </div>
+      <div class="info-section">
+        <div class="info-label">Dirección</div>
+        <div style="display:flex;align-items:flex-start;gap:8px">
+          <i class="fas fa-map-pin" style="color:var(--danger);margin-top:3px;flex-shrink:0"></i>
+          <div class="info-value" id="det-direccion" style="font-size:14px">—</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;flex-wrap:wrap;gap:8px">
+        <div id="gps-status" class="gps-pill searching">
+          <div class="spinner" style="width:12px;height:12px;border-width:2px;border-color:rgba(217,119,6,.3);border-top-color:var(--warn)"></div>
+          Buscando GPS...
+        </div>
+        <div id="lbl-intentos" class="intentos-badge hidden">
+          <i class="fas fa-history"></i> <span id="txt-intentos">0</span>/3 intentos
+        </div>
+      </div>
+    </div>
+
+    <!-- Fotos -->
+    <div>
+      <div class="section-title" style="margin-bottom:12px">
+        <i class="fas fa-camera"></i> EVIDENCIAS FOTOGRÁFICAS
+        <span style="font-size:11px;font-weight:600;color:var(--muted);margin-left:auto">Toca para ver · Mantén para retomar</span>
+      </div>
+      <div class="photo-grid">
+        <button id="btn-fachada" class="photo-btn required" onclick="app.tapPhoto('fachada')" oncontextmenu="app.retakePhoto('fachada');return false">
+          <i class="fas fa-home btn-icon"></i><span class="btn-label">FACHADA *</span>
+        </button>
+        <button id="btn-piso" class="photo-btn" onclick="app.tapPhoto('piso')" oncontextmenu="app.retakePhoto('piso');return false">
+          <i class="fas fa-layer-group btn-icon"></i><span class="btn-label">PISO</span>
+        </button>
+        <button id="btn-techo" class="photo-btn" onclick="app.tapPhoto('techo')" oncontextmenu="app.retakePhoto('techo');return false">
+          <i class="fas fa-chevron-up btn-icon"></i><span class="btn-label">TECHO</span>
+        </button>
+        <button id="btn-bano" class="photo-btn" onclick="app.tapPhoto('bano')" oncontextmenu="app.retakePhoto('bano');return false">
+          <i class="fas fa-bath btn-icon"></i><span class="btn-label">BAÑO</span>
+        </button>
+        <button id="btn-cocina" class="photo-btn" onclick="app.tapPhoto('cocina')" oncontextmenu="app.retakePhoto('cocina');return false">
+          <i class="fas fa-utensils btn-icon"></i><span class="btn-label">COCINA</span>
+        </button>
+        <button id="btn-anexo" class="photo-btn" style="border-color:#a5b4fc;background:#eef2ff" onclick="app.tapPhoto('anexo')" oncontextmenu="app.retakePhoto('anexo');return false">
+          <i class="fas fa-file-alt btn-icon" style="color:#6366f1"></i>
+          <span class="btn-label" style="color:#6366f1">ANEXO/DOC</span>
+        </button>
+      </div>
+      <div class="photo-progress">
+        <div class="progress-bar"><div class="progress-fill" id="photo-progress-fill" style="width:0%"></div></div>
+        <div class="progress-label"><span id="photo-count">0</span> de 6 fotos · <span id="photo-size-total">0 KB</span> total</div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="form-card">
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-user-check"></i> ¿Quién recibe la visita?</label>
+        <input type="text" id="txt-recibido" class="form-input" placeholder="Nombre completo">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-edit"></i> Observaciones</label>
+        <textarea id="txt-observaciones" class="form-textarea" rows="3" placeholder="Ej: Faltan documentos, predio cerrado..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-actions">
+    <button id="btn-submit-pending" class="btn-pending" onclick="app.confirmSubmit(true)">
+      <i class="fas fa-clock"></i> PENDIENTE
+    </button>
+    <button id="btn-submit-final" class="btn-final" onclick="app.confirmSubmit(false)">
+      <i class="fas fa-check-circle"></i> FINALIZAR VISITA
+    </button>
+  </div>
+</div>
+
+<!-- ══ JAVASCRIPT ══ -->
+<script type="module">
+import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs, doc, updateDoc, getDoc, arrayUnion }
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL }
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+// ══ CONFIGURACIÓN ══════════════════════════════
+const firebaseConfig = {
+  apiKey:            "AIzaSyDONjZdM9RcPN20OxmlrO7Ns5I2-HoqET0",
+  authDomain:        "generador-8b0f4.firebaseapp.com",
+  projectId:         "generador-8b0f4",
+  storageBucket:     "generador-8b0f4.firebasestorage.app",
+  messagingSenderId: "81617541502",
+  appId:             "1:81617541502:web:d806aca48a23c75f7b7b2f"
+};
+const DB_PATH = "artifacts/generador-8b0f4/public/data";
+// ═══════════════════════════════════════════════
+
+const fbApp   = initializeApp(firebaseConfig);
+const db      = getFirestore(fbApp);
+const storage = getStorage(fbApp);
+
+let currentUser  = null;
+let currentVisit = null;
+let photosBuffer = {};     // { type: { blob, sizeKB, url } }
+let currentGPS   = null;
+let currentTab   = 'asignadas';
+let isOnline     = navigator.onLine;
+let offlineQueue = [];     // visitas guardadas offline
+
+// ── Utils ────────────────────────────────────────
+const $ = id => document.getElementById(id);
+
+window.ui = {
+  show: id => {
+    document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
+    const s = $(id);
+    s.classList.remove('hidden');
+    s.classList.remove('fade-in');
+    void s.offsetWidth;
+    s.classList.add('fade-in');
+  },
+  toast: (msg, type = '', duration = 3000) => {
+    const t = $('toast');
+    t.textContent = msg;
+    t.className = `show ${type}`;
+    clearTimeout(t._t);
+    t._t = setTimeout(() => { t.className = ''; }, duration);
+  },
+  showConfirm: (title, bodyHtml, onConfirm, confirmClass = 'ok', confirmLabel = 'Confirmar') => {
+    $('confirm-title').innerHTML = title;
+    $('confirm-body').innerHTML  = bodyHtml;
+    const btn = $('confirm-ok-btn');
+    btn.className = `btn-confirm ${confirmClass}`;
+    btn.textContent = confirmLabel;
+    btn.onclick = () => { ui.closeConfirm(); onConfirm(); };
+    $('confirm-modal').classList.remove('hidden');
+  },
+  closeConfirm: () => $('confirm-modal').classList.add('hidden'),
+  closePhotoModal: () => $('photo-modal').classList.add('hidden'),
+  showSuccess: (msg, delay = 2000) => {
+    $('success-sub').textContent = msg;
+    $('success-overlay').classList.remove('hidden');
+    setTimeout(() => {
+      $('success-overlay').classList.add('hidden');
+      app.initHome();
+    }, delay);
+  }
+};
+
+// ── Conexión ─────────────────────────────────────
+function updateOnlineStatus() {
+  isOnline = navigator.onLine;
+  const pill = $('online-pill');
+  const banner = $('offline-banner');
+  if (isOnline) {
+    pill.className = 'on';
+    pill.innerHTML = '<i class="fas fa-circle" style="font-size:7px"></i> EN LÍNEA';
+    banner.classList.add('hidden');
+    app.syncOfflineQueue(); // intentar subir cola offline
+  } else {
+    pill.className = 'off';
+    pill.innerHTML = '<i class="fas fa-circle" style="font-size:7px"></i> SIN CONEXIÓN';
+    banner.classList.remove('hidden');
+  }
+}
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+// ── Comprimir foto ───────────────────────────────
+function compressImage(file, maxW = 900, quality = 0.60) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = re => {
+      const img = new Image();
+      img.onload = () => {
+        const scale  = img.width > maxW ? maxW / img.width : 1;
+        const canvas = document.createElement('canvas');
+        canvas.width  = Math.round(img.width  * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(blob => {
+          const sizeKB = Math.round(blob.size / 1024);
+          resolve({ blob, sizeKB, url: URL.createObjectURL(blob) });
+        }, 'image/jpeg', quality);
+      };
+      img.src = re.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ── Progreso de fotos ────────────────────────────
+function updatePhotoProgress() {
+  const count   = Object.keys(photosBuffer).length;
+  const totalKB = Object.values(photosBuffer).reduce((s, p) => s + (p.sizeKB || 0), 0);
+  $('photo-count').textContent       = count;
+  $('photo-progress-fill').style.width = `${(count/6)*100}%`;
+  $('photo-size-total').textContent  = totalKB < 1000
+    ? `${totalKB} KB` : `${(totalKB/1024).toFixed(1)} MB`;
+}
+
+// ── Avatar con iniciales ─────────────────────────
+function makeAvatar(name) {
+  const words  = (name || '').trim().split(' ').filter(Boolean);
+  const initials = words.length >= 2
+    ? words[0][0] + words[1][0]
+    : (words[0] || '?')[0];
+  const colors = ['#1e40af','#059669','#d97706','#7c3aed','#dc2626','#0891b2'];
+  const color  = colors[name.charCodeAt(0) % colors.length];
+  return { initials: initials.toUpperCase(), color };
+}
+
+// ── Offline Queue (localStorage) ─────────────────
+function saveOfflineQueue() {
+  try { localStorage.setItem('caucasia_offline_queue', JSON.stringify(offlineQueue)); } catch {}
+}
+function loadOfflineQueue() {
+  try { offlineQueue = JSON.parse(localStorage.getItem('caucasia_offline_queue') || '[]'); } catch { offlineQueue = []; }
+}
+function updateQueueBadge() {
+  const pill = $('queue-pill');
+  if (offlineQueue.length > 0) {
+    pill.classList.remove('hidden');
+    $('queue-text').textContent = `${offlineQueue.length} visita(s) pendiente(s) de sincronizar`;
+  } else {
+    pill.classList.add('hidden');
+  }
+}
+
+// ══ App ══════════════════════════════════════════
+window.app = {
+
+  login: async () => {
+    const u   = $('login-user').value.trim();
+    const p   = $('login-pass').value.trim();
+    const btn = $('btn-login');
+    if (!u || !p) return ui.toast('Ingrese usuario y contraseña.', 'warn');
+
+    btn.innerHTML = '<div class="spinner"></div>';
+    btn.disabled  = true;
+
+    try {
+      const snap = await getDoc(doc(db, `${DB_PATH}/users`, u));
+      if (snap.exists() && snap.data().password === p) {
+        currentUser = { username: u, ...snap.data() };
+        localStorage.setItem('caucasia_user_v4', JSON.stringify(currentUser));
+        app.initHome();
+      } else {
+        ui.toast('Credenciales incorrectas.', 'err');
+        btn.innerHTML = '<span>INGRESAR</span><i class="fas fa-arrow-right"></i>';
+        btn.disabled  = false;
+      }
+    } catch (e) {
+      if (!isOnline) {
+        // Login offline con caché
+        const cached = localStorage.getItem('caucasia_user_v4');
+        if (cached) {
+          currentUser = JSON.parse(cached);
+          if (currentUser.username === u) { app.initHome(); return; }
+        }
+        ui.toast('Sin conexión. No se puede iniciar sesión por primera vez offline.', 'err');
+      } else {
+        ui.toast('Error de conexión.', 'err');
+      }
+      btn.innerHTML = '<span>INGRESAR</span><i class="fas fa-arrow-right"></i>';
+      btn.disabled  = false;
+    }
+  },
+
+  logout: () => {
+    if (!confirm('¿Cerrar sesión?')) return;
+    localStorage.removeItem('caucasia_user_v4');
+    location.reload();
+  },
+
+  switchTab: tab => {
+    currentTab = tab;
+    ['asignadas','pendientes'].forEach(t => {
+      $(`tab-${t}`).classList.toggle('active', t === tab);
+    });
+    app.initHome();
+  },
+
+  initHome: async () => {
+    ui.show('screen-home');
+    const name = (currentUser.name || currentUser.username);
+    const av   = makeAvatar(name);
+    $('lbl-user-name').textContent  = name.split(' ')[0];
+    $('user-avatar').textContent    = av.initials;
+    $('user-avatar').style.background = av.color;
+    updateOnlineStatus();
+    loadOfflineQueue();
+    updateQueueBadge();
+
+    const container = $('visit-list');
+    container.innerHTML = '<div class="loading-state"><div class="spinner dark"></div><span style="font-size:13px;font-weight:600;color:var(--muted)">Cargando visitas...</span></div>';
+
+    // Offline: mostrar visitas del localStorage
+    if (!isOnline) {
+      const cached = JSON.parse(localStorage.getItem('caucasia_visits_cache') || '[]');
+      renderVisits(cached.filter(v =>
+        v.visita_asignada_a === currentUser.username &&
+        v.estado === (currentTab === 'asignadas' ? 'EN_VISITA' : 'PENDIENTE_DOC')
+      ), true);
+      return;
+    }
+
+    try {
+      const [snapA, snapP] = await Promise.all([
+        getDocs(query(collection(db, `${DB_PATH}/radicados`),
+          where("visita_asignada_a","==",currentUser.username),
+          where("estado","==","EN_VISITA"))),
+        getDocs(query(collection(db, `${DB_PATH}/radicados`),
+          where("visita_asignada_a","==",currentUser.username),
+          where("estado","==","PENDIENTE_DOC")))
+      ]);
+
+      $('badge-asignadas').textContent  = snapA.size;
+      $('badge-pendientes').textContent = snapP.size;
+
+      const snap   = currentTab === 'asignadas' ? snapA : snapP;
+      const visits = [];
+      snap.forEach(d => visits.push({ id: d.id, ...d.data() }));
+
+      // Guardar en caché para offline
+      const allVisits = [];
+      snapA.forEach(d => allVisits.push({ id: d.id, ...d.data() }));
+      snapP.forEach(d => allVisits.push({ id: d.id, ...d.data() }));
+      localStorage.setItem('caucasia_visits_cache', JSON.stringify(allVisits));
+
+      renderVisits(visits, false);
+    } catch (e) {
+      container.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error de conexión</div><div class="empty-sub">${e.message}</div></div>`;
+    }
+  },
+
+  openDetail: (id, data) => {
+    currentVisit = { id, ...data };
+    photosBuffer = {};
+    currentGPS   = null;
+
+    $('det-radicado').textContent  = data.numero_radicado || '—';
+    $('det-nombre').textContent    = data.remitente || '—';
+    $('det-direccion').textContent = data.direccion || '—';
+    $('det-cedula').textContent    = data.cedula ? `CC/NIT: ${data.cedula}` : '';
+    $('txt-observaciones').value   = '';
+    $('txt-recibido').value        = data.visita_recibida_por || '';
+
+    const tel = data.telefono;
+    $('det-telefono').textContent = tel || 'No registrado';
+    const callBtn = $('btn-llamar');
+    if (tel) { callBtn.href = `tel:${tel}`; callBtn.classList.remove('hidden'); }
+    else { callBtn.classList.add('hidden'); }
+
+    // Segundo número
+    const tel2 = data.telefono2;
+    const tel2El = $('det-telefono2');
+    const call2Btn = $('btn-llamar2');
+    if (tel2) {
+      tel2El.textContent = tel2;
+      call2Btn.href = `tel:${tel2}`;
+      call2Btn.classList.remove('hidden');
+    } else {
+      tel2El.textContent = '';
+      call2Btn.classList.add('hidden');
+    }
+
+    const intEl = $('lbl-intentos');
+    const n = data.intentos_contacto?.length || 0;
+    if (n) { $('txt-intentos').textContent = n; intEl.classList.remove('hidden'); }
+    else    { intEl.classList.add('hidden'); }
+
+    const alertEl = $('alert-pending');
+    if (data.estado === 'PENDIENTE_DOC') {
+      alertEl.classList.remove('hidden');
+      $('alert-pending-msg').textContent = data.notas_visita || 'Revisión pendiente.';
+    } else { alertEl.classList.add('hidden'); }
+
+    // Reset photo buttons
+    const photoDefs = [
+      ['fachada','fa-home','FACHADA *',true,'required'],
+      ['piso','fa-layer-group','PISO',false,''],
+      ['techo','fa-chevron-up','TECHO',false,''],
+      ['bano','fa-bath','BAÑO',false,''],
+      ['cocina','fa-utensils','COCINA',false,''],
+      ['anexo','fa-file-alt','ANEXO/DOC',false,'anexo-btn'],
+    ];
+    photoDefs.forEach(([type, icon, label, req]) => {
+      const btn = $(`btn-${type}`);
+      btn.className = `photo-btn${req ? ' required' : ''}`;
+      if (type === 'anexo') btn.style.cssText = 'border-color:#a5b4fc;background:#eef2ff';
+      else btn.style.cssText = '';
+      const iconColor = type === 'anexo' ? 'color:#6366f1' : '';
+      const labelColor = type === 'anexo' ? 'color:#6366f1' : '';
+      btn.innerHTML = `<i class="fas ${icon} btn-icon" style="${iconColor}"></i><span class="btn-label" style="${labelColor}">${label}</span>`;
+    });
+    updatePhotoProgress();
+
+    const gpsEl = $('gps-status');
+    gpsEl.className = 'gps-pill searching';
+    gpsEl.innerHTML = `<div class="spinner" style="width:12px;height:12px;border-width:2px;border-color:rgba(217,119,6,.3);border-top-color:var(--warn)"></div> Buscando GPS...`;
+
+    ui.show('screen-detail');
+    $('detail-body').scrollTop = 0;
+    app.startGPS();
+  },
+
+  startGPS: () => {
+    if (!navigator.geolocation) return;
+    let attempts = 0;
+    const tryGPS = () => {
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          currentGPS = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: Math.round(pos.coords.accuracy) };
+          const gpsEl = $('gps-status');
+          gpsEl.className = 'gps-pill ok';
+          gpsEl.innerHTML = `<i class="fas fa-check-circle"></i> GPS OK (±${currentGPS.acc}m)`;
+        },
+        () => {
+          if (++attempts < 3) setTimeout(tryGPS, 3000);
+          else {
+            const gpsEl = $('gps-status');
+            gpsEl.className = 'gps-pill error';
+            gpsEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> GPS no disponible`;
+          }
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    };
+    tryGPS();
+  },
+
+  // Toque en foto: si ya tiene imagen → preview; si no → capturar
+  tapPhoto: type => {
+    if (photosBuffer[type]) {
+      // Mostrar preview
+      $('photo-modal-img').src  = photosBuffer[type].url;
+      $('photo-modal-label').textContent = type.toUpperCase() + ` · ${photosBuffer[type].sizeKB} KB`;
+      $('photo-modal').classList.remove('hidden');
+    } else {
+      app.capture(type);
+    }
+  },
+
+  retakePhoto: type => app.capture(type),
+
+  capture: type => {
+    const input    = document.createElement('input');
+    input.type     = 'file';
+    input.accept   = 'image/*';
+    input.capture  = 'environment';
+    input.onchange = async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      ui.toast('Comprimiendo imagen...', '', 1500);
+      // Compresión agresiva: 900px ancho, calidad 0.55
+      const result = await compressImage(file, 900, 0.55);
+      photosBuffer[type] = result;
+      updatePhotoProgress();
+
+      const btn = $(`btn-${type}`);
+      btn.innerHTML = '';
+      btn.className = 'photo-btn done';
+      const img = document.createElement('img');
+      img.src = result.url;
+      btn.appendChild(img);
+      const badge = document.createElement('div');
+      badge.className = 'done-badge';
+      badge.innerHTML = '<i class="fas fa-check"></i>';
+      btn.appendChild(badge);
+      const sizeEl = document.createElement('div');
+      sizeEl.className = 'size-label';
+      sizeEl.textContent = `${result.sizeKB} KB`;
+      btn.appendChild(sizeEl);
+    };
+    input.click();
+  },
+
+  confirmSubmit: isPartial => {
+    if (!photosBuffer['fachada']) return ui.toast('⚠️ La foto de la FACHADA es obligatoria.', 'warn');
+    const recibidoPor = $('txt-recibido').value.trim();
+    if (!isPartial && !recibidoPor) return ui.toast('⚠️ Indique quién recibe la visita.', 'warn');
+    const obs = $('txt-observaciones').value.trim();
+    if (isPartial && !obs) return ui.toast('⚠️ Para dejar pendiente, escriba una observación.', 'warn');
+
+    const photoCount = Object.keys(photosBuffer).length;
+    const totalKB    = Object.values(photosBuffer).reduce((s,p) => s+p.sizeKB, 0);
+    const gpsText    = currentGPS ? `${currentGPS.lat.toFixed(5)}, ${currentGPS.lng.toFixed(5)}` : 'No disponible';
+
+    const bodyHtml = `
+      <div class="confirm-row"><span class="confirm-label">Radicado</span><span class="confirm-value">${currentVisit.numero_radicado}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Solicitante</span><span class="confirm-value">${currentVisit.remitente || '—'}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Fotos</span><span class="confirm-value ${photoCount >= 3 ? 'ok':'warn'}">${photoCount} foto(s) · ${totalKB} KB</span></div>
+      <div class="confirm-row"><span class="confirm-label">Recibe</span><span class="confirm-value">${recibidoPor || 'Pendiente'}</span></div>
+      <div class="confirm-row"><span class="confirm-label">GPS</span><span class="confirm-value" style="font-size:11px">${gpsText}</span></div>
+      ${obs ? `<div class="confirm-row"><span class="confirm-label">Observación</span><span class="confirm-value" style="font-size:12px">${obs}</span></div>` : ''}
+    `;
+
+    ui.showConfirm(
+      isPartial ? '<i class="fas fa-clock" style="color:var(--warn)"></i> Dejar en Seguimiento'
+                : '<i class="fas fa-check-circle" style="color:var(--ok)"></i> Finalizar Visita',
+      bodyHtml,
+      () => app.submitReport(isPartial),
+      isPartial ? 'warn' : 'ok',
+      isPartial ? 'Guardar como pendiente' : 'Sí, finalizar'
+    );
+  },
+
+  submitReport: async isPartial => {
+    const recibidoPor = $('txt-recibido').value.trim();
+    const obs         = $('txt-observaciones').value.trim();
+    const btnP = $('btn-submit-pending'), btnF = $('btn-submit-final');
+    const origP = btnP.innerHTML, origF = btnF.innerHTML;
+    const target = isPartial ? btnP : btnF;
+
+    target.innerHTML = '<div class="spinner"></div> Guardando...';
+    btnP.disabled = btnF.disabled = true;
+
+    const reportData = {
+      estado:              isPartial ? 'PENDIENTE_DOC' : 'VISITA_REALIZADA',
+      gps_visita:          currentGPS || currentVisit.gps_visita || null,
+      fecha_visita_real:   new Date().toISOString(),
+      tecnico_responsable: currentUser.name || currentUser.username,
+      notas_visita:        (isPartial ? 'PENDIENTE: ' : '') + obs,
+      visita_recibida_por: recibidoPor || 'Pendiente'
+    };
+
+    // Si no hay internet → guardar offline
+    if (!isOnline) {
+      offlineQueue.push({
+        id: currentVisit.id,
+        reportData,
+        photos: Object.fromEntries(
+          await Promise.all(Object.entries(photosBuffer).map(async ([type, p]) => {
+            // Guardar blob como base64 para localStorage
+            const ab = await p.blob.arrayBuffer();
+            const b64 = btoa(String.fromCharCode(...new Uint8Array(ab)));
+            return [type, { b64, sizeKB: p.sizeKB, numero_radicado: currentVisit.numero_radicado }];
+          }))
+        )
+      });
+      saveOfflineQueue();
+      ui.toast('Sin conexión — visita guardada para sincronizar más tarde.', 'warn', 4000);
+      setTimeout(() => app.initHome(), 1500);
+      return;
+    }
+
+    try {
+      const uploadedUrls = { ...(currentVisit.fotos_visita || {}) };
+      const types = Object.keys(photosBuffer);
+
+      for (let i = 0; i < types.length; i++) {
+        const type = types[i];
+        target.innerHTML = `<div class="spinner"></div> Foto ${i+1}/${types.length}...`;
+        console.log(`Subiendo foto ${type}...`);
+        const sRef = ref(storage, `evidencias/${currentVisit.numero_radicado}/${type}_${Date.now()}.jpg`);
+        await uploadBytes(sRef, photosBuffer[type].blob);
+        uploadedUrls[type] = await getDownloadURL(sRef);
+        console.log(`Foto ${type} subida: ${uploadedUrls[type]}`);
+      }
+
+      console.log('Actualizando Firestore:', currentVisit.id, reportData);
+      await updateDoc(doc(db, `${DB_PATH}/radicados`, currentVisit.id), {
+        ...reportData, fotos_visita: uploadedUrls
+      });
+      console.log('Firestore actualizado correctamente');
+
+      if (isPartial) {
+        ui.toast('⏳ Guardado en seguimiento.', 'warn');
+        setTimeout(() => app.initHome(), 1200);
+      } else {
+        ui.showSuccess(`Visita ${currentVisit.numero_radicado} completada`);
+      }
+    } catch (e) {
+      console.error('Error en submitReport:', e);
+      const msg = e.code === 'storage/unauthorized'
+        ? 'Sin permiso para subir fotos. Verifique las reglas de Storage en Firebase.'
+        : e.code === 'not-found'
+        ? 'Radicado no encontrado en la base de datos.'
+        : e.message || 'Error desconocido';
+      ui.toast('❌ ' + msg, 'err', 6000);
+      btnP.innerHTML  = origP; btnF.innerHTML = origF;
+      btnP.disabled   = btnF.disabled = false;
+    }
+  },
+
+  syncOfflineQueue: async () => {
+    loadOfflineQueue();
+    if (!offlineQueue.length || !isOnline) return;
+    ui.toast(`Sincronizando ${offlineQueue.length} visita(s)...`, '', 5000);
+    let synced = 0;
+    const remaining = [];
+
+    for (const item of offlineQueue) {
+      try {
+        const uploadedUrls = {};
+        for (const [type, photoData] of Object.entries(item.photos || {})) {
+          // Reconstruir blob desde base64
+          const binary = atob(photoData.b64);
+          const arr = new Uint8Array(binary.length);
+          for (let i = 0; i < binary.length; i++) arr[i] = binary.charCodeAt(i);
+          const blob = new Blob([arr], { type: 'image/jpeg' });
+          const sRef = ref(storage, `evidencias/${photoData.numero_radicado}/${type}_${Date.now()}.jpg`);
+          await uploadBytes(sRef, blob);
+          uploadedUrls[type] = await getDownloadURL(sRef);
+        }
+        await updateDoc(doc(db, `${DB_PATH}/radicados`, item.id), {
+          ...item.reportData, fotos_visita: uploadedUrls
+        });
+        synced++;
+      } catch { remaining.push(item); }
+    }
+
+    offlineQueue = remaining;
+    saveOfflineQueue();
+    updateQueueBadge();
+    if (synced > 0) ui.toast(`✅ ${synced} visita(s) sincronizada(s).`, 'ok');
+  },
+
+  logUserRejection: async () => {
+    const reason = prompt('Motivo del rechazo (obligatorio):');
+    if (!reason?.trim()) return;
+    ui.showConfirm(
+      '<i class="fas fa-ban" style="color:var(--warn)"></i> Cancelar visita',
+      `<div class="confirm-row"><span class="confirm-label">Motivo</span><span class="confirm-value">${reason}</span></div>`,
+      async () => {
+        try {
+          await updateDoc(doc(db, `${DB_PATH}/radicados`, currentVisit.id), {
+            estado: 'CANCELADO_USUARIO',
+            notas_visita: `CANCELADO. Motivo: ${reason}`,
+            fecha_cierre: new Date().toISOString(),
+            tecnico_responsable: currentUser.name
+          });
+          ui.toast('Caso cancelado.', 'warn');
+          setTimeout(() => app.initHome(), 1000);
+        } catch (e) { ui.toast(e.message, 'err'); }
+      }, 'warn', 'Cancelar visita'
+    );
+  },
+
+  logNoContact: async () => {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const attempts = currentVisit.intentos_contacto || [];
+    if (attempts.length && attempts.at(-1).fecha.startsWith(todayStr))
+      return ui.toast('Ya registraste un intento hoy.', 'warn');
+
+    ui.showConfirm(
+      '<i class="fas fa-user-slash" style="color:var(--danger)"></i> Registrar intento fallido',
+      `<div class="confirm-row"><span class="confirm-label">Intentos</span><span class="confirm-value warn">${attempts.length + 1} de 3</span></div>
+       <div class="confirm-row"><span class="confirm-label">Fecha</span><span class="confirm-value">${todayStr}</span></div>
+       ${attempts.length >= 2 ? '<div style="padding:10px;background:#fee2e2;border-radius:8px;font-size:13px;font-weight:700;color:#991b1b;margin-top:8px">⚠️ Tercer intento — el caso quedará CERRADO automáticamente</div>' : ''}`,
+      async () => {
+        const newAttempt = { fecha: new Date().toISOString(), tecnico: currentUser.username };
+        try {
+          const updates = { intentos_contacto: arrayUnion(newAttempt) };
+          if (attempts.length + 1 >= 3) {
+            updates.estado = 'INCOMPLETO';
+            updates.notas_visita = 'CERRADO: 3 intentos fallidos.';
+          }
+          await updateDoc(doc(db, `${DB_PATH}/radicados`, currentVisit.id), updates);
+          if (attempts.length + 1 >= 3) {
+            ui.showSuccess('Caso cerrado por 3 intentos fallidos', 2500);
+          } else {
+            ui.toast(`Intento ${attempts.length+1}/3 registrado.`, 'warn');
+            currentVisit.intentos_contacto = [...attempts, newAttempt];
+            $('txt-intentos').textContent = attempts.length + 1;
+            $('lbl-intentos').classList.remove('hidden');
+          }
+        } catch (e) { ui.toast(e.message, 'err'); }
+      }, 'danger', 'Registrar intento'
+    );
+  }
+};
+
+// ── Render visits helper ─────────────────────────
+function renderVisits(visits, fromCache) {
+  const container = $('visit-list');
+  container.innerHTML = '';
+
+  if (!visits.length) {
+    const msgs = {
+      asignadas:  ['No tienes nuevas visitas asignadas', 'Las visitas nuevas aparecerán aquí'],
+      pendientes: ['Sin visitas en seguimiento', 'Las visitas con documentos pendientes aparecerán aquí']
+    };
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">${currentTab === 'asignadas' ? '🏠' : '📋'}</div>
+        <div class="empty-title">${msgs[currentTab][0]}</div>
+        <div class="empty-sub">${msgs[currentTab][1]}</div>
+      </div>`;
+    return;
+  }
+
+  visits.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'visit-card fade-in';
+    card.onclick   = () => app.openDetail(d.id, d);
+    const isPend    = currentTab === 'pendientes';
+    const isOffline = fromCache;
+    const barCls    = isOffline ? 'offline' : (isPend ? 'pend' : 'new');
+    const radCls    = isOffline ? 'offline' : (isPend ? 'pend' : 'new');
+    const intentosBadge = d.intentos_contacto?.length
+      ? `<span class="visit-tag red"><i class="fas fa-history"></i> ${d.intentos_contacto.length} intento(s)</span>` : '';
+    const cedTag  = d.cedula ? `<span class="visit-tag">CC: ${d.cedula}</span>` : '';
+    const offTag  = isOffline ? '<span class="visit-tag purple"><i class="fas fa-database"></i> Cache local</span>' : '';
+
+    card.innerHTML = `
+      <div class="visit-card-bar ${barCls}"></div>
+      <div class="visit-card-content">
+        <div class="visit-rad ${radCls}">Rad # ${d.numero_radicado}</div>
+        <div class="visit-name">${d.remitente || '—'}</div>
+        <div class="visit-addr"><i class="fas fa-map-marker-alt" style="margin-right:4px;color:var(--danger)"></i>${d.direccion || '—'}</div>
+        <div class="visit-meta">${cedTag}${intentosBadge}${offTag}</div>
+      </div>
+      <i class="fas fa-chevron-right visit-arrow"></i>`;
+    container.appendChild(card);
+  });
+}
+
+// ── Inicio ────────────────────────────────────────
+loadOfflineQueue();
+updateOnlineStatus();
+
+window.onload = () => {
+  const saved = localStorage.getItem('caucasia_user_v4');
+  if (saved) {
+    try { currentUser = JSON.parse(saved); app.initHome(); }
+    catch { ui.show('screen-login'); }
+  } else { ui.show('screen-login'); }
+};
+
+$('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') app.login(); });
+</script>
+</body>
+</html>
