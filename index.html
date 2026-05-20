@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+ 
   <style>
     :root {
       --brand:#1e40af; --brand-light:#dbeafe; --brand-mid:#3b82f6;
@@ -22,18 +22,15 @@
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden;font-size:15px}
     .screen{position:absolute;inset:0;display:flex;flex-direction:column}
     .screen.hidden{display:none}
-
-    /* Toast */
+ 
     #toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%) translateY(16px);background:#1e293b;color:white;padding:11px 20px;border-radius:50px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;z-index:9999;max-width:88vw;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.3)}
     #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
     #toast.ok{background:var(--ok)}#toast.warn{background:var(--warn)}#toast.err{background:var(--danger)}
-
-    /* Online pill */
+ 
     #online-pill{padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700;transition:all .4s;display:flex;align-items:center;gap:5px;flex-shrink:0}
     #online-pill.on{background:var(--ok-light);color:var(--ok)}
     #online-pill.off{background:var(--danger-light);color:var(--danger)}
-
-    /* Login */
+ 
     #screen-login{background:linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #16a34a 100%);justify-content:center;align-items:center;padding:24px}
     .login-card{background:white;border-radius:24px;padding:32px 28px;width:100%;max-width:380px;box-shadow:0 24px 64px rgba(0,0,0,.35)}
     .login-logo{width:72px;height:72px;background:var(--brand-light);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px;color:var(--brand)}
@@ -46,8 +43,7 @@
     .btn-primary{width:100%;padding:15px;border:none;border-radius:var(--radius-sm);background:var(--brand);color:white;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
     .btn-primary:active{transform:scale(.98)}
     .btn-primary:disabled{opacity:.6}
-
-    /* Home header */
+ 
     .home-header{background:white;padding:16px 20px 0;border-radius:0 0 24px 24px;z-index:10;box-shadow:0 1px 0 var(--border)}
     .home-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
     .user-info{display:flex;align-items:center;gap:12px}
@@ -62,8 +58,7 @@
     .tab.active{color:var(--brand);border-bottom-color:var(--brand)}
     .badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:#e2e8f0;color:var(--muted);transition:all .2s}
     .tab.active .badge{background:var(--brand-light);color:var(--brand)}
-
-    /* Visit list */
+ 
     #visit-list{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;padding-bottom:24px}
     .visit-card{background:white;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1.5px solid var(--border);cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:14px}
     .visit-card:active{transform:scale(.98);box-shadow:none}
@@ -88,8 +83,7 @@
     .empty-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px}
     .empty-sub{font-size:14px}
     .loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;flex:1;color:var(--muted)}
-
-    /* Detail */
+ 
     .detail-header{background:white;padding:16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);z-index:10;flex-shrink:0}
     .btn-back{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--border);background:white;color:var(--text);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
     .detail-rad{text-align:center}
@@ -119,8 +113,7 @@
     .intentos-badge{display:inline-flex;align-items:center;gap:4px;background:var(--danger-light);color:var(--danger);padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700;border:1px solid #fca5a5}
     .section-title{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:8px}
     .section-title i{color:var(--brand)}
-
-    /* Photo grid */
+ 
     .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .photo-btn{height:110px;border-radius:var(--radius-sm);border:2px dashed var(--border);background:var(--bg);cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:inherit;position:relative;overflow:hidden}
     .photo-btn:active{transform:scale(.96)}
@@ -137,8 +130,7 @@
     .progress-bar{height:5px;background:var(--border);border-radius:4px;overflow:hidden}
     .progress-fill{height:100%;background:var(--ok);border-radius:4px;transition:width .3s}
     .progress-label{font-size:12px;color:var(--muted);font-weight:600;margin-top:6px}
-
-    /* Form */
+ 
     .form-card{background:white;border-radius:var(--radius);border:1.5px solid var(--border);padding:18px;box-shadow:var(--shadow)}
     .form-group{margin-bottom:14px}
     .form-group:last-child{margin-bottom:0}
@@ -146,8 +138,7 @@
     .form-input,.form-textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;font-size:15px;color:var(--text);background:#f8fafc;outline:none;transition:all .2s;font-weight:500}
     .form-input:focus,.form-textarea:focus{border-color:var(--brand-mid);background:white;box-shadow:0 0 0 3px var(--brand-light)}
     .form-textarea{resize:none;line-height:1.5}
-
-    /* Bottom */
+ 
     .bottom-actions{position:fixed;bottom:0;left:0;right:0;background:white;padding:12px 16px 22px;border-top:1px solid var(--border);display:flex;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,.08);z-index:20}
     .btn-pending{flex:1;padding:14px;border-radius:var(--radius-sm);border:1.5px solid #fcd34d;background:var(--warn-light);color:var(--warn);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
     .btn-pending:active{transform:scale(.97)}
@@ -155,8 +146,7 @@
     .btn-final{flex:2;padding:14px;border-radius:var(--radius-sm);border:none;background:var(--ok);color:white;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 16px rgba(5,150,105,.3)}
     .btn-final:active{transform:scale(.97)}
     .btn-final:disabled{opacity:.5;box-shadow:none}
-
-    /* Modal de confirmación */
+ 
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:flex;align-items:flex-end;padding:16px}
     .modal-overlay.hidden{display:none}
     .modal-card{background:white;border-radius:24px 24px 20px 20px;padding:24px;width:100%;max-width:480px;margin:0 auto;animation:slideUp .3s ease-out}
@@ -173,48 +163,41 @@
     .btn-confirm{flex:2;padding:14px;border-radius:var(--radius-sm);border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:white}
     .btn-confirm.ok{background:var(--ok)}
     .btn-confirm.warn{background:var(--warn)}
-
-    /* Photo preview modal */
+ 
     .photo-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:600;display:flex;flex-direction:column;align-items:center;justify-content:center}
     .photo-modal.hidden{display:none}
     .photo-modal img{max-width:100%;max-height:80vh;object-fit:contain;border-radius:12px}
     .photo-modal-close{position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.2);border:none;color:white;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
     .photo-modal-label{color:white;font-size:14px;font-weight:700;margin-top:16px;text-transform:uppercase;letter-spacing:1px}
-
-    /* Spinner */
+ 
     .spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite}
     .spinner.dark{border-color:rgba(0,0,0,.15);border-top-color:var(--brand)}
     @keyframes spin{to{transform:rotate(360deg)}}
-
-    /* Success animation */
+ 
     .success-overlay{position:fixed;inset:0;background:rgba(5,150,105,.95);z-index:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
     .success-overlay.hidden{display:none}
     .success-icon{width:100px;height:100px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:48px;animation:popIn .4s ease-out}
     @keyframes popIn{0%{transform:scale(0)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
     .success-title{font-size:24px;font-weight:800;color:white}
     .success-sub{font-size:15px;color:rgba(255,255,255,.8);font-weight:600}
-
-    /* Offline queue badge */
+ 
     .queue-pill{background:#ede9fe;color:#6d28d9;border:1.5px solid #c4b5fd;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;margin:0 16px 4px}
     .queue-pill.hidden{display:none}
-
+ 
     @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     .fade-in{animation:fadeUp .25s ease-out}
   </style>
 </head>
 <body>
-
-<!-- Online indicator and Toast -->
+ 
 <div id="toast"></div>
-
-<!-- Photo preview modal -->
+ 
 <div id="photo-modal" class="photo-modal hidden">
   <button class="photo-modal-close" onclick="ui.closePhotoModal()"><i class="fas fa-times"></i></button>
   <img id="photo-modal-img" src="" alt="preview">
   <div class="photo-modal-label" id="photo-modal-label"></div>
 </div>
-
-<!-- Confirm modal -->
+ 
 <div id="confirm-modal" class="modal-overlay hidden">
   <div class="modal-card">
     <div class="modal-title" id="confirm-title"></div>
@@ -225,15 +208,14 @@
     </div>
   </div>
 </div>
-
-<!-- Success overlay -->
+ 
 <div id="success-overlay" class="success-overlay hidden">
   <div class="success-icon">✅</div>
   <div class="success-title">¡Visita completada!</div>
   <div class="success-sub" id="success-sub">Información guardada correctamente</div>
 </div>
-
-<!-- ══ LOGIN ══ -->
+ 
+<!-- LOGIN -->
 <div id="screen-login" class="screen fade-in">
   <div style="background:linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #16a34a 100%);flex:1;display:flex;align-items:center;justify-content:center;padding:24px">
     <div class="login-card">
@@ -254,8 +236,8 @@
     </div>
   </div>
 </div>
-
-<!-- ══ HOME ══ -->
+ 
+<!-- HOME -->
 <div id="screen-home" class="screen hidden fade-in">
   <div class="home-header">
     <div class="home-top">
@@ -286,15 +268,15 @@
     <span id="queue-text">Hay visitas pendientes de sincronizar</span>
     <button onclick="app.syncOfflineQueue()" style="background:#7c3aed;color:white;border:none;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;margin-left:auto">SUBIR</button>
   </div>
-  <div id="visit-list" class="fade-in" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;padding-bottom:24px">
+  <div id="visit-list" class="fade-in">
     <div class="loading-state">
       <div class="spinner dark"></div>
       <span style="font-size:13px;font-weight:600;color:var(--muted)">Cargando visitas...</span>
     </div>
   </div>
 </div>
-
-<!-- ══ DETALLE ══ -->
+ 
+<!-- DETALLE -->
 <div id="screen-detail" class="screen hidden fade-in">
   <div class="detail-header">
     <button class="btn-back" onclick="ui.show('screen-home')"><i class="fas fa-chevron-left"></i></button>
@@ -307,7 +289,7 @@
       <button class="btn-action danger" onclick="app.logNoContact()"     title="No contesta"><i class="fas fa-user-slash"></i></button>
     </div>
   </div>
-
+ 
   <div id="detail-body">
     <div id="alert-pending" class="alert hidden">
       <i class="fas fa-exclamation-triangle"></i>
@@ -316,7 +298,7 @@
         <div class="alert-msg" id="alert-pending-msg"></div>
       </div>
     </div>
-
+ 
     <div class="info-card">
       <div class="info-section">
         <div class="info-label">Solicitante</div>
@@ -347,8 +329,7 @@
         </div>
       </div>
     </div>
-
-    <!-- Fotos -->
+ 
     <div>
       <div class="section-title" style="margin-bottom:12px">
         <i class="fas fa-camera"></i> EVIDENCIAS FOTOGRÁFICAS
@@ -380,8 +361,7 @@
         <div class="progress-label"><span id="photo-count">0</span> de 6 fotos · <span id="photo-size-total">0 KB</span> total</div>
       </div>
     </div>
-
-    <!-- Form -->
+ 
     <div class="form-card">
       <div class="form-group">
         <label class="form-label"><i class="fas fa-user-check"></i> ¿Quién recibe la visita?</label>
@@ -393,7 +373,7 @@
       </div>
     </div>
   </div>
-
+ 
   <div class="bottom-actions">
     <button id="btn-submit-pending" class="btn-pending" onclick="app.confirmSubmit(true)">
       <i class="fas fa-clock"></i> PENDIENTE
@@ -403,16 +383,13 @@
     </button>
   </div>
 </div>
-
-<!-- ══ JAVASCRIPT ══ -->
+ 
 <script type="module">
 import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, query, where, getDocs, doc, updateDoc, getDoc, arrayUnion }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL }
-  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-
-// ══ CONFIGURACIÓN ══════════════════════════════
+ 
+// ══ CONFIGURACIÓN ══════════════════════════════════════════
 const firebaseConfig = {
   apiKey:            "AIzaSyDONjZdM9RcPN20OxmlrO7Ns5I2-HoqET0",
   authDomain:        "generador-8b0f4.firebaseapp.com",
@@ -422,23 +399,61 @@ const firebaseConfig = {
   appId:             "1:81617541502:web:d806aca48a23c75f7b7b2f"
 };
 const DB_PATH = "artifacts/generador-8b0f4/public/data";
-// ═══════════════════════════════════════════════
-
-const fbApp   = initializeApp(firebaseConfig);
-const db      = getFirestore(fbApp);
-const storage = getStorage(fbApp);
-
+ 
+// ══ CLOUDINARY — reemplaza Firebase Storage ════════════════
+const CLOUDINARY_CLOUD_NAME    = "dsv6yewzd";
+const CLOUDINARY_UPLOAD_PRESET = "caudi_unsigned";
+ 
+/**
+ * Sube una imagen (Blob) a Cloudinary via API REST sin SDK.
+ * Las fotos van como image/upload (acceso público).
+ * Devuelve la URL segura de Cloudinary.
+ */
+async function subirFotoCloudinary(blob, numeroRadicado, tipo) {
+  const b64 = await new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result); // ya viene como data URI
+    reader.readAsDataURL(blob);
+  });
+ 
+  const publicId = `${tipo}_${Date.now()}`;
+  const carpeta  = `caudi/radicados/visitas/${numeroRadicado}`;
+ 
+  const formData = new FormData();
+  formData.append("file",          b64);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  formData.append("folder",        carpeta);
+  formData.append("public_id",     publicId);
+ 
+  const resp = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+    { method: "POST", body: formData }
+  );
+ 
+  if (!resp.ok) {
+    const err = await resp.text();
+    throw new Error(`Cloudinary error ${resp.status}: ${err}`);
+  }
+ 
+  const data = await resp.json();
+  if (!data.secure_url) throw new Error("Cloudinary no devolvió URL");
+  return data.secure_url;
+}
+// ══════════════════════════════════════════════════════════
+ 
+const fbApp = initializeApp(firebaseConfig);
+const db    = getFirestore(fbApp);
+ 
 let currentUser  = null;
 let currentVisit = null;
-let photosBuffer = {};     // { type: { blob, sizeKB, url } }
+let photosBuffer = {};
 let currentGPS   = null;
 let currentTab   = 'asignadas';
 let isOnline     = navigator.onLine;
-let offlineQueue = [];     // visitas guardadas offline
-
-// ── Utils ────────────────────────────────────────
+let offlineQueue = [];
+ 
 const $ = id => document.getElementById(id);
-
+ 
 window.ui = {
   show: id => {
     document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
@@ -459,33 +474,29 @@ window.ui = {
     $('confirm-title').innerHTML = title;
     $('confirm-body').innerHTML  = bodyHtml;
     const btn = $('confirm-ok-btn');
-    btn.className = `btn-confirm ${confirmClass}`;
+    btn.className   = `btn-confirm ${confirmClass}`;
     btn.textContent = confirmLabel;
-    btn.onclick = () => { ui.closeConfirm(); onConfirm(); };
+    btn.onclick     = () => { ui.closeConfirm(); onConfirm(); };
     $('confirm-modal').classList.remove('hidden');
   },
-  closeConfirm: () => $('confirm-modal').classList.add('hidden'),
+  closeConfirm:    () => $('confirm-modal').classList.add('hidden'),
   closePhotoModal: () => $('photo-modal').classList.add('hidden'),
   showSuccess: (msg, delay = 2000) => {
     $('success-sub').textContent = msg;
     $('success-overlay').classList.remove('hidden');
-    setTimeout(() => {
-      $('success-overlay').classList.add('hidden');
-      app.initHome();
-    }, delay);
+    setTimeout(() => { $('success-overlay').classList.add('hidden'); app.initHome(); }, delay);
   }
 };
-
-// ── Conexión ─────────────────────────────────────
+ 
 function updateOnlineStatus() {
   isOnline = navigator.onLine;
-  const pill = $('online-pill');
+  const pill   = $('online-pill');
   const banner = $('offline-banner');
   if (isOnline) {
     pill.className = 'on';
     pill.innerHTML = '<i class="fas fa-circle" style="font-size:7px"></i> EN LÍNEA';
     banner.classList.add('hidden');
-    app.syncOfflineQueue(); // intentar subir cola offline
+    app.syncOfflineQueue();
   } else {
     pill.className = 'off';
     pill.innerHTML = '<i class="fas fa-circle" style="font-size:7px"></i> SIN CONEXIÓN';
@@ -494,8 +505,7 @@ function updateOnlineStatus() {
 }
 window.addEventListener('online',  updateOnlineStatus);
 window.addEventListener('offline', updateOnlineStatus);
-
-// ── Comprimir foto ───────────────────────────────
+ 
 function compressImage(file, maxW = 900, quality = 0.60) {
   return new Promise(resolve => {
     const reader = new FileReader();
@@ -508,8 +518,7 @@ function compressImage(file, maxW = 900, quality = 0.60) {
         canvas.height = Math.round(img.height * scale);
         canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
         canvas.toBlob(blob => {
-          const sizeKB = Math.round(blob.size / 1024);
-          resolve({ blob, sizeKB, url: URL.createObjectURL(blob) });
+          resolve({ blob, sizeKB: Math.round(blob.size / 1024), url: URL.createObjectURL(blob) });
         }, 'image/jpeg', quality);
       };
       img.src = re.target.result;
@@ -517,36 +526,25 @@ function compressImage(file, maxW = 900, quality = 0.60) {
     reader.readAsDataURL(file);
   });
 }
-
-// ── Progreso de fotos ────────────────────────────
+ 
 function updatePhotoProgress() {
   const count   = Object.keys(photosBuffer).length;
   const totalKB = Object.values(photosBuffer).reduce((s, p) => s + (p.sizeKB || 0), 0);
-  $('photo-count').textContent       = count;
+  $('photo-count').textContent         = count;
   $('photo-progress-fill').style.width = `${(count/6)*100}%`;
-  $('photo-size-total').textContent  = totalKB < 1000
-    ? `${totalKB} KB` : `${(totalKB/1024).toFixed(1)} MB`;
+  $('photo-size-total').textContent    = totalKB < 1000 ? `${totalKB} KB` : `${(totalKB/1024).toFixed(1)} MB`;
 }
-
-// ── Avatar con iniciales ─────────────────────────
+ 
 function makeAvatar(name) {
-  const words  = (name || '').trim().split(' ').filter(Boolean);
-  const initials = words.length >= 2
-    ? words[0][0] + words[1][0]
-    : (words[0] || '?')[0];
-  const colors = ['#1e40af','#059669','#d97706','#7c3aed','#dc2626','#0891b2'];
-  const color  = colors[name.charCodeAt(0) % colors.length];
-  return { initials: initials.toUpperCase(), color };
+  const words    = (name || '').trim().split(' ').filter(Boolean);
+  const initials = words.length >= 2 ? words[0][0] + words[1][0] : (words[0] || '?')[0];
+  const colors   = ['#1e40af','#059669','#d97706','#7c3aed','#dc2626','#0891b2'];
+  return { initials: initials.toUpperCase(), color: colors[name.charCodeAt(0) % colors.length] };
 }
-
-// ── Offline Queue (localStorage) ─────────────────
-function saveOfflineQueue() {
-  try { localStorage.setItem('caucasia_offline_queue', JSON.stringify(offlineQueue)); } catch {}
-}
-function loadOfflineQueue() {
-  try { offlineQueue = JSON.parse(localStorage.getItem('caucasia_offline_queue') || '[]'); } catch { offlineQueue = []; }
-}
-function updateQueueBadge() {
+ 
+function saveOfflineQueue()  { try { localStorage.setItem('caucasia_offline_queue', JSON.stringify(offlineQueue)); } catch {} }
+function loadOfflineQueue()  { try { offlineQueue = JSON.parse(localStorage.getItem('caucasia_offline_queue') || '[]'); } catch { offlineQueue = []; } }
+function updateQueueBadge()  {
   const pill = $('queue-pill');
   if (offlineQueue.length > 0) {
     pill.classList.remove('hidden');
@@ -555,19 +553,16 @@ function updateQueueBadge() {
     pill.classList.add('hidden');
   }
 }
-
-// ══ App ══════════════════════════════════════════
+ 
 window.app = {
-
+ 
   login: async () => {
     const u   = $('login-user').value.trim();
     const p   = $('login-pass').value.trim();
     const btn = $('btn-login');
     if (!u || !p) return ui.toast('Ingrese usuario y contraseña.', 'warn');
-
     btn.innerHTML = '<div class="spinner"></div>';
     btn.disabled  = true;
-
     try {
       const snap = await getDoc(doc(db, `${DB_PATH}/users`, u));
       if (snap.exists() && snap.data().password === p) {
@@ -581,159 +576,102 @@ window.app = {
       }
     } catch (e) {
       if (!isOnline) {
-        // Login offline con caché
         const cached = localStorage.getItem('caucasia_user_v4');
-        if (cached) {
-          currentUser = JSON.parse(cached);
-          if (currentUser.username === u) { app.initHome(); return; }
-        }
-        ui.toast('Sin conexión. No se puede iniciar sesión por primera vez offline.', 'err');
-      } else {
-        ui.toast('Error de conexión.', 'err');
-      }
+        if (cached) { currentUser = JSON.parse(cached); if (currentUser.username === u) { app.initHome(); return; } }
+        ui.toast('Sin conexión. No se puede iniciar sesión offline por primera vez.', 'err');
+      } else { ui.toast('Error de conexión.', 'err'); }
       btn.innerHTML = '<span>INGRESAR</span><i class="fas fa-arrow-right"></i>';
       btn.disabled  = false;
     }
   },
-
-  logout: () => {
-    if (!confirm('¿Cerrar sesión?')) return;
-    localStorage.removeItem('caucasia_user_v4');
-    location.reload();
-  },
-
+ 
+  logout: () => { if (!confirm('¿Cerrar sesión?')) return; localStorage.removeItem('caucasia_user_v4'); location.reload(); },
+ 
   switchTab: tab => {
     currentTab = tab;
-    ['asignadas','pendientes'].forEach(t => {
-      $(`tab-${t}`).classList.toggle('active', t === tab);
-    });
+    ['asignadas','pendientes'].forEach(t => $(`tab-${t}`).classList.toggle('active', t === tab));
     app.initHome();
   },
-
+ 
   initHome: async () => {
     ui.show('screen-home');
-    const name = (currentUser.name || currentUser.username);
+    const name = currentUser.name || currentUser.username;
     const av   = makeAvatar(name);
-    $('lbl-user-name').textContent  = name.split(' ')[0];
-    $('user-avatar').textContent    = av.initials;
+    $('lbl-user-name').textContent    = name.split(' ')[0];
+    $('user-avatar').textContent      = av.initials;
     $('user-avatar').style.background = av.color;
     updateOnlineStatus();
     loadOfflineQueue();
     updateQueueBadge();
-
+ 
     const container = $('visit-list');
     container.innerHTML = '<div class="loading-state"><div class="spinner dark"></div><span style="font-size:13px;font-weight:600;color:var(--muted)">Cargando visitas...</span></div>';
-
-    // Offline: mostrar visitas del localStorage
+ 
     if (!isOnline) {
       const cached = JSON.parse(localStorage.getItem('caucasia_visits_cache') || '[]');
-      renderVisits(cached.filter(v =>
-        v.visita_asignada_a === currentUser.username &&
-        v.estado === (currentTab === 'asignadas' ? 'EN_VISITA' : 'PENDIENTE_DOC')
-      ), true);
+      renderVisits(cached.filter(v => v.visita_asignada_a === currentUser.username &&
+        v.estado === (currentTab === 'asignadas' ? 'EN_VISITA' : 'PENDIENTE_DOC')), true);
       return;
     }
-
+ 
     try {
       const [snapA, snapP] = await Promise.all([
-        getDocs(query(collection(db, `${DB_PATH}/radicados`),
-          where("visita_asignada_a","==",currentUser.username),
-          where("estado","==","EN_VISITA"))),
-        getDocs(query(collection(db, `${DB_PATH}/radicados`),
-          where("visita_asignada_a","==",currentUser.username),
-          where("estado","==","PENDIENTE_DOC")))
+        getDocs(query(collection(db, `${DB_PATH}/radicados`), where("visita_asignada_a","==",currentUser.username), where("estado","==","EN_VISITA"))),
+        getDocs(query(collection(db, `${DB_PATH}/radicados`), where("visita_asignada_a","==",currentUser.username), where("estado","==","PENDIENTE_DOC")))
       ]);
-
       $('badge-asignadas').textContent  = snapA.size;
       $('badge-pendientes').textContent = snapP.size;
-
       const snap   = currentTab === 'asignadas' ? snapA : snapP;
       const visits = [];
       snap.forEach(d => visits.push({ id: d.id, ...d.data() }));
-
-      // Guardar en caché para offline
       const allVisits = [];
       snapA.forEach(d => allVisits.push({ id: d.id, ...d.data() }));
       snapP.forEach(d => allVisits.push({ id: d.id, ...d.data() }));
       localStorage.setItem('caucasia_visits_cache', JSON.stringify(allVisits));
-
       renderVisits(visits, false);
     } catch (e) {
       container.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error de conexión</div><div class="empty-sub">${e.message}</div></div>`;
     }
   },
-
+ 
   openDetail: (id, data) => {
     currentVisit = { id, ...data };
     photosBuffer = {};
     currentGPS   = null;
-
     $('det-radicado').textContent  = data.numero_radicado || '—';
     $('det-nombre').textContent    = data.remitente || '—';
     $('det-direccion').textContent = data.direccion || '—';
     $('det-cedula').textContent    = data.cedula ? `CC/NIT: ${data.cedula}` : '';
     $('txt-observaciones').value   = '';
     $('txt-recibido').value        = data.visita_recibida_por || '';
-
     const tel = data.telefono;
     $('det-telefono').textContent = tel || 'No registrado';
     const callBtn = $('btn-llamar');
-    if (tel) { callBtn.href = `tel:${tel}`; callBtn.classList.remove('hidden'); }
-    else { callBtn.classList.add('hidden'); }
-
-    // Segundo número
+    if (tel) { callBtn.href = `tel:${tel}`; callBtn.classList.remove('hidden'); } else { callBtn.classList.add('hidden'); }
     const tel2 = data.telefono2;
-    const tel2El = $('det-telefono2');
-    const call2Btn = $('btn-llamar2');
-    if (tel2) {
-      tel2El.textContent = tel2;
-      call2Btn.href = `tel:${tel2}`;
-      call2Btn.classList.remove('hidden');
-    } else {
-      tel2El.textContent = '';
-      call2Btn.classList.add('hidden');
-    }
-
-    const intEl = $('lbl-intentos');
+    if (tel2) { $('det-telefono2').textContent = tel2; $('btn-llamar2').href = `tel:${tel2}`; $('btn-llamar2').classList.remove('hidden'); }
+    else { $('det-telefono2').textContent = ''; $('btn-llamar2').classList.add('hidden'); }
     const n = data.intentos_contacto?.length || 0;
-    if (n) { $('txt-intentos').textContent = n; intEl.classList.remove('hidden'); }
-    else    { intEl.classList.add('hidden'); }
-
-    const alertEl = $('alert-pending');
+    if (n) { $('txt-intentos').textContent = n; $('lbl-intentos').classList.remove('hidden'); }
+    else   { $('lbl-intentos').classList.add('hidden'); }
     if (data.estado === 'PENDIENTE_DOC') {
-      alertEl.classList.remove('hidden');
+      $('alert-pending').classList.remove('hidden');
       $('alert-pending-msg').textContent = data.notas_visita || 'Revisión pendiente.';
-    } else { alertEl.classList.add('hidden'); }
-
-    // Reset photo buttons
-    const photoDefs = [
-      ['fachada','fa-home','FACHADA *',true,'required'],
-      ['piso','fa-layer-group','PISO',false,''],
-      ['techo','fa-chevron-up','TECHO',false,''],
-      ['bano','fa-bath','BAÑO',false,''],
-      ['cocina','fa-utensils','COCINA',false,''],
-      ['anexo','fa-file-alt','ANEXO/DOC',false,'anexo-btn'],
-    ];
-    photoDefs.forEach(([type, icon, label, req]) => {
+    } else { $('alert-pending').classList.add('hidden'); }
+    ['fachada','piso','techo','bano','cocina','anexo'].forEach(type => {
       const btn = $(`btn-${type}`);
-      btn.className = `photo-btn${req ? ' required' : ''}`;
-      if (type === 'anexo') btn.style.cssText = 'border-color:#a5b4fc;background:#eef2ff';
-      else btn.style.cssText = '';
-      const iconColor = type === 'anexo' ? 'color:#6366f1' : '';
-      const labelColor = type === 'anexo' ? 'color:#6366f1' : '';
-      btn.innerHTML = `<i class="fas ${icon} btn-icon" style="${iconColor}"></i><span class="btn-label" style="${labelColor}">${label}</span>`;
+      btn.className = `photo-btn${type === 'fachada' ? ' required' : ''}`;
+      btn.style.cssText = type === 'anexo' ? 'border-color:#a5b4fc;background:#eef2ff' : '';
     });
     updatePhotoProgress();
-
     const gpsEl = $('gps-status');
     gpsEl.className = 'gps-pill searching';
     gpsEl.innerHTML = `<div class="spinner" style="width:12px;height:12px;border-width:2px;border-color:rgba(217,119,6,.3);border-top-color:var(--warn)"></div> Buscando GPS...`;
-
     ui.show('screen-detail');
     $('detail-body').scrollTop = 0;
     app.startGPS();
   },
-
+ 
   startGPS: () => {
     if (!navigator.geolocation) return;
     let attempts = 0;
@@ -745,34 +683,23 @@ window.app = {
           gpsEl.className = 'gps-pill ok';
           gpsEl.innerHTML = `<i class="fas fa-check-circle"></i> GPS OK (±${currentGPS.acc}m)`;
         },
-        () => {
-          if (++attempts < 3) setTimeout(tryGPS, 3000);
-          else {
-            const gpsEl = $('gps-status');
-            gpsEl.className = 'gps-pill error';
-            gpsEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> GPS no disponible`;
-          }
-        },
+        () => { if (++attempts < 3) setTimeout(tryGPS, 3000); else { const g = $('gps-status'); g.className = 'gps-pill error'; g.innerHTML = `<i class="fas fa-exclamation-circle"></i> GPS no disponible`; } },
         { enableHighAccuracy: true, timeout: 10000 }
       );
     };
     tryGPS();
   },
-
-  // Toque en foto: si ya tiene imagen → preview; si no → capturar
+ 
   tapPhoto: type => {
     if (photosBuffer[type]) {
-      // Mostrar preview
-      $('photo-modal-img').src  = photosBuffer[type].url;
-      $('photo-modal-label').textContent = type.toUpperCase() + ` · ${photosBuffer[type].sizeKB} KB`;
+      $('photo-modal-img').src         = photosBuffer[type].url;
+      $('photo-modal-label').textContent = `${type.toUpperCase()} · ${photosBuffer[type].sizeKB} KB`;
       $('photo-modal').classList.remove('hidden');
-    } else {
-      app.capture(type);
-    }
+    } else { app.capture(type); }
   },
-
+ 
   retakePhoto: type => app.capture(type),
-
+ 
   capture: type => {
     const input    = document.createElement('input');
     input.type     = 'file';
@@ -782,11 +709,9 @@ window.app = {
       const file = e.target.files[0];
       if (!file) return;
       ui.toast('Comprimiendo imagen...', '', 1500);
-      // Compresión agresiva: 900px ancho, calidad 0.55
       const result = await compressImage(file, 900, 0.55);
       photosBuffer[type] = result;
       updatePhotoProgress();
-
       const btn = $(`btn-${type}`);
       btn.innerHTML = '';
       btn.className = 'photo-btn done';
@@ -798,53 +723,46 @@ window.app = {
       badge.innerHTML = '<i class="fas fa-check"></i>';
       btn.appendChild(badge);
       const sizeEl = document.createElement('div');
-      sizeEl.className = 'size-label';
+      sizeEl.className  = 'size-label';
       sizeEl.textContent = `${result.sizeKB} KB`;
       btn.appendChild(sizeEl);
     };
     input.click();
   },
-
+ 
   confirmSubmit: isPartial => {
     if (!photosBuffer['fachada']) return ui.toast('⚠️ La foto de la FACHADA es obligatoria.', 'warn');
     const recibidoPor = $('txt-recibido').value.trim();
     if (!isPartial && !recibidoPor) return ui.toast('⚠️ Indique quién recibe la visita.', 'warn');
     const obs = $('txt-observaciones').value.trim();
     if (isPartial && !obs) return ui.toast('⚠️ Para dejar pendiente, escriba una observación.', 'warn');
-
     const photoCount = Object.keys(photosBuffer).length;
     const totalKB    = Object.values(photosBuffer).reduce((s,p) => s+p.sizeKB, 0);
     const gpsText    = currentGPS ? `${currentGPS.lat.toFixed(5)}, ${currentGPS.lng.toFixed(5)}` : 'No disponible';
-
     const bodyHtml = `
       <div class="confirm-row"><span class="confirm-label">Radicado</span><span class="confirm-value">${currentVisit.numero_radicado}</span></div>
       <div class="confirm-row"><span class="confirm-label">Solicitante</span><span class="confirm-value">${currentVisit.remitente || '—'}</span></div>
       <div class="confirm-row"><span class="confirm-label">Fotos</span><span class="confirm-value ${photoCount >= 3 ? 'ok':'warn'}">${photoCount} foto(s) · ${totalKB} KB</span></div>
       <div class="confirm-row"><span class="confirm-label">Recibe</span><span class="confirm-value">${recibidoPor || 'Pendiente'}</span></div>
       <div class="confirm-row"><span class="confirm-label">GPS</span><span class="confirm-value" style="font-size:11px">${gpsText}</span></div>
-      ${obs ? `<div class="confirm-row"><span class="confirm-label">Observación</span><span class="confirm-value" style="font-size:12px">${obs}</span></div>` : ''}
-    `;
-
+      ${obs ? `<div class="confirm-row"><span class="confirm-label">Observación</span><span class="confirm-value" style="font-size:12px">${obs}</span></div>` : ''}`;
     ui.showConfirm(
       isPartial ? '<i class="fas fa-clock" style="color:var(--warn)"></i> Dejar en Seguimiento'
                 : '<i class="fas fa-check-circle" style="color:var(--ok)"></i> Finalizar Visita',
-      bodyHtml,
-      () => app.submitReport(isPartial),
-      isPartial ? 'warn' : 'ok',
+      bodyHtml, () => app.submitReport(isPartial), isPartial ? 'warn' : 'ok',
       isPartial ? 'Guardar como pendiente' : 'Sí, finalizar'
     );
   },
-
+ 
   submitReport: async isPartial => {
     const recibidoPor = $('txt-recibido').value.trim();
     const obs         = $('txt-observaciones').value.trim();
     const btnP = $('btn-submit-pending'), btnF = $('btn-submit-final');
     const origP = btnP.innerHTML, origF = btnF.innerHTML;
     const target = isPartial ? btnP : btnF;
-
-    target.innerHTML = '<div class="spinner"></div> Guardando...';
+    target.innerHTML  = '<div class="spinner"></div> Guardando...';
     btnP.disabled = btnF.disabled = true;
-
+ 
     const reportData = {
       estado:              isPartial ? 'PENDIENTE_DOC' : 'VISITA_REALIZADA',
       gps_visita:          currentGPS || currentVisit.gps_visita || null,
@@ -853,16 +771,15 @@ window.app = {
       notas_visita:        (isPartial ? 'PENDIENTE: ' : '') + obs,
       visita_recibida_por: recibidoPor || 'Pendiente'
     };
-
-    // Si no hay internet → guardar offline
+ 
+    // Sin internet → guardar offline
     if (!isOnline) {
       offlineQueue.push({
         id: currentVisit.id,
         reportData,
         photos: Object.fromEntries(
           await Promise.all(Object.entries(photosBuffer).map(async ([type, p]) => {
-            // Guardar blob como base64 para localStorage
-            const ab = await p.blob.arrayBuffer();
+            const ab  = await p.blob.arrayBuffer();
             const b64 = btoa(String.fromCharCode(...new Uint8Array(ab)));
             return [type, { b64, sizeKB: p.sizeKB, numero_radicado: currentVisit.numero_radicado }];
           }))
@@ -873,27 +790,28 @@ window.app = {
       setTimeout(() => app.initHome(), 1500);
       return;
     }
-
+ 
     try {
       const uploadedUrls = { ...(currentVisit.fotos_visita || {}) };
       const types = Object.keys(photosBuffer);
-
+ 
+      // ── Subir fotos a Cloudinary (no Firebase Storage) ──
       for (let i = 0; i < types.length; i++) {
         const type = types[i];
         target.innerHTML = `<div class="spinner"></div> Foto ${i+1}/${types.length}...`;
-        console.log(`Subiendo foto ${type}...`);
-        const sRef = ref(storage, `evidencias/${currentVisit.numero_radicado}/${type}_${Date.now()}.jpg`);
-        await uploadBytes(sRef, photosBuffer[type].blob);
-        uploadedUrls[type] = await getDownloadURL(sRef);
-        console.log(`Foto ${type} subida: ${uploadedUrls[type]}`);
+        const url = await subirFotoCloudinary(
+          photosBuffer[type].blob,
+          currentVisit.numero_radicado,
+          type
+        );
+        uploadedUrls[type] = url;
+        console.log(`Foto ${type} subida a Cloudinary: ${url}`);
       }
-
-      console.log('Actualizando Firestore:', currentVisit.id, reportData);
+ 
       await updateDoc(doc(db, `${DB_PATH}/radicados`, currentVisit.id), {
         ...reportData, fotos_visita: uploadedUrls
       });
-      console.log('Firestore actualizado correctamente');
-
+ 
       if (isPartial) {
         ui.toast('⏳ Guardado en seguimiento.', 'warn');
         setTimeout(() => app.initHome(), 1200);
@@ -901,37 +819,30 @@ window.app = {
         ui.showSuccess(`Visita ${currentVisit.numero_radicado} completada`);
       }
     } catch (e) {
-      console.error('Error en submitReport:', e);
-      const msg = e.code === 'storage/unauthorized'
-        ? 'Sin permiso para subir fotos. Verifique las reglas de Storage en Firebase.'
-        : e.code === 'not-found'
-        ? 'Radicado no encontrado en la base de datos.'
-        : e.message || 'Error desconocido';
-      ui.toast('❌ ' + msg, 'err', 6000);
+      console.error('Error:', e);
+      ui.toast('❌ ' + (e.message || 'Error desconocido'), 'err', 6000);
       btnP.innerHTML  = origP; btnF.innerHTML = origF;
       btnP.disabled   = btnF.disabled = false;
     }
   },
-
+ 
   syncOfflineQueue: async () => {
     loadOfflineQueue();
     if (!offlineQueue.length || !isOnline) return;
     ui.toast(`Sincronizando ${offlineQueue.length} visita(s)...`, '', 5000);
     let synced = 0;
     const remaining = [];
-
     for (const item of offlineQueue) {
       try {
         const uploadedUrls = {};
         for (const [type, photoData] of Object.entries(item.photos || {})) {
-          // Reconstruir blob desde base64
           const binary = atob(photoData.b64);
-          const arr = new Uint8Array(binary.length);
+          const arr    = new Uint8Array(binary.length);
           for (let i = 0; i < binary.length; i++) arr[i] = binary.charCodeAt(i);
           const blob = new Blob([arr], { type: 'image/jpeg' });
-          const sRef = ref(storage, `evidencias/${photoData.numero_radicado}/${type}_${Date.now()}.jpg`);
-          await uploadBytes(sRef, blob);
-          uploadedUrls[type] = await getDownloadURL(sRef);
+          // Subir a Cloudinary
+          const url = await subirFotoCloudinary(blob, photoData.numero_radicado, type);
+          uploadedUrls[type] = url;
         }
         await updateDoc(doc(db, `${DB_PATH}/radicados`, item.id), {
           ...item.reportData, fotos_visita: uploadedUrls
@@ -939,13 +850,12 @@ window.app = {
         synced++;
       } catch { remaining.push(item); }
     }
-
     offlineQueue = remaining;
     saveOfflineQueue();
     updateQueueBadge();
     if (synced > 0) ui.toast(`✅ ${synced} visita(s) sincronizada(s).`, 'ok');
   },
-
+ 
   logUserRejection: async () => {
     const reason = prompt('Motivo del rechazo (obligatorio):');
     if (!reason?.trim()) return;
@@ -955,10 +865,8 @@ window.app = {
       async () => {
         try {
           await updateDoc(doc(db, `${DB_PATH}/radicados`, currentVisit.id), {
-            estado: 'CANCELADO_USUARIO',
-            notas_visita: `CANCELADO. Motivo: ${reason}`,
-            fecha_cierre: new Date().toISOString(),
-            tecnico_responsable: currentUser.name
+            estado: 'CANCELADO_USUARIO', notas_visita: `CANCELADO. Motivo: ${reason}`,
+            fecha_cierre: new Date().toISOString(), tecnico_responsable: currentUser.name
           });
           ui.toast('Caso cancelado.', 'warn');
           setTimeout(() => app.initHome(), 1000);
@@ -966,13 +874,12 @@ window.app = {
       }, 'warn', 'Cancelar visita'
     );
   },
-
+ 
   logNoContact: async () => {
     const todayStr = new Date().toISOString().split('T')[0];
     const attempts = currentVisit.intentos_contacto || [];
     if (attempts.length && attempts.at(-1).fecha.startsWith(todayStr))
       return ui.toast('Ya registraste un intento hoy.', 'warn');
-
     ui.showConfirm(
       '<i class="fas fa-user-slash" style="color:var(--danger)"></i> Registrar intento fallido',
       `<div class="confirm-row"><span class="confirm-label">Intentos</span><span class="confirm-value warn">${attempts.length + 1} de 3</span></div>
@@ -982,10 +889,7 @@ window.app = {
         const newAttempt = { fecha: new Date().toISOString(), tecnico: currentUser.username };
         try {
           const updates = { intentos_contacto: arrayUnion(newAttempt) };
-          if (attempts.length + 1 >= 3) {
-            updates.estado = 'INCOMPLETO';
-            updates.notas_visita = 'CERRADO: 3 intentos fallidos.';
-          }
+          if (attempts.length + 1 >= 3) { updates.estado = 'INCOMPLETO'; updates.notas_visita = 'CERRADO: 3 intentos fallidos.'; }
           await updateDoc(doc(db, `${DB_PATH}/radicados`, currentVisit.id), updates);
           if (attempts.length + 1 >= 3) {
             ui.showSuccess('Caso cerrado por 3 intentos fallidos', 2500);
@@ -1000,39 +904,25 @@ window.app = {
     );
   }
 };
-
-// ── Render visits helper ─────────────────────────
+ 
 function renderVisits(visits, fromCache) {
   const container = $('visit-list');
   container.innerHTML = '';
-
   if (!visits.length) {
-    const msgs = {
-      asignadas:  ['No tienes nuevas visitas asignadas', 'Las visitas nuevas aparecerán aquí'],
-      pendientes: ['Sin visitas en seguimiento', 'Las visitas con documentos pendientes aparecerán aquí']
-    };
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">${currentTab === 'asignadas' ? '🏠' : '📋'}</div>
-        <div class="empty-title">${msgs[currentTab][0]}</div>
-        <div class="empty-sub">${msgs[currentTab][1]}</div>
-      </div>`;
+    const msgs = { asignadas: ['No tienes nuevas visitas asignadas','Las visitas nuevas aparecerán aquí'], pendientes: ['Sin visitas en seguimiento','Las visitas con documentos pendientes aparecerán aquí'] };
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">${currentTab === 'asignadas' ? '🏠' : '📋'}</div><div class="empty-title">${msgs[currentTab][0]}</div><div class="empty-sub">${msgs[currentTab][1]}</div></div>`;
     return;
   }
-
   visits.forEach(d => {
-    const card = document.createElement('div');
+    const card    = document.createElement('div');
     card.className = 'visit-card fade-in';
     card.onclick   = () => app.openDetail(d.id, d);
-    const isPend    = currentTab === 'pendientes';
-    const isOffline = fromCache;
-    const barCls    = isOffline ? 'offline' : (isPend ? 'pend' : 'new');
-    const radCls    = isOffline ? 'offline' : (isPend ? 'pend' : 'new');
-    const intentosBadge = d.intentos_contacto?.length
-      ? `<span class="visit-tag red"><i class="fas fa-history"></i> ${d.intentos_contacto.length} intento(s)</span>` : '';
+    const isPend   = currentTab === 'pendientes';
+    const barCls   = fromCache ? 'offline' : (isPend ? 'pend' : 'new');
+    const radCls   = fromCache ? 'offline' : (isPend ? 'pend' : 'new');
+    const intentosBadge = d.intentos_contacto?.length ? `<span class="visit-tag red"><i class="fas fa-history"></i> ${d.intentos_contacto.length} intento(s)</span>` : '';
     const cedTag  = d.cedula ? `<span class="visit-tag">CC: ${d.cedula}</span>` : '';
-    const offTag  = isOffline ? '<span class="visit-tag purple"><i class="fas fa-database"></i> Cache local</span>' : '';
-
+    const offTag  = fromCache ? '<span class="visit-tag purple"><i class="fas fa-database"></i> Cache local</span>' : '';
     card.innerHTML = `
       <div class="visit-card-bar ${barCls}"></div>
       <div class="visit-card-content">
@@ -1045,19 +935,16 @@ function renderVisits(visits, fromCache) {
     container.appendChild(card);
   });
 }
-
-// ── Inicio ────────────────────────────────────────
+ 
 loadOfflineQueue();
 updateOnlineStatus();
-
+ 
 window.onload = () => {
   const saved = localStorage.getItem('caucasia_user_v4');
-  if (saved) {
-    try { currentUser = JSON.parse(saved); app.initHome(); }
-    catch { ui.show('screen-login'); }
-  } else { ui.show('screen-login'); }
+  if (saved) { try { currentUser = JSON.parse(saved); app.initHome(); } catch { ui.show('screen-login'); } }
+  else { ui.show('screen-login'); }
 };
-
+ 
 $('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') app.login(); });
 </script>
 </body>
